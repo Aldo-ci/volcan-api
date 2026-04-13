@@ -53,7 +53,7 @@ export class ProductsService {
     const queryBuilder = this.productsRepository
       .createQueryBuilder('product')
       .leftJoinAndSelect('product.category', 'category')
-      .where('product.deleted_at IS NULL');
+      .where('product.deletedAt IS NULL');
 
     if (query.search) {
       queryBuilder.andWhere('LOWER(product.name) LIKE LOWER(:search)', {
@@ -62,22 +62,22 @@ export class ProductsService {
     }
 
     if (query.categoryId) {
-      queryBuilder.andWhere('product.category_id = :categoryId', {
+      queryBuilder.andWhere('product.categoryId = :categoryId', {
         categoryId: query.categoryId,
       });
     }
 
     if (query.isActive !== undefined) {
-      queryBuilder.andWhere('product.is_active = :isActive', {
+      queryBuilder.andWhere('product.isActive = :isActive', {
         isActive: query.isActive,
       });
     }
 
     if (query.lowStock) {
-      queryBuilder.andWhere('product.stock_quantity <= product.minimum_stock');
+      queryBuilder.andWhere('product.stockQuantity <= product.minimumStock');
     }
 
-    queryBuilder.orderBy('product.created_at', 'DESC');
+    queryBuilder.orderBy('product.createdAt', 'DESC');
     queryBuilder.skip((page - 1) * limit).take(limit);
 
     const [products, total] = await queryBuilder.getManyAndCount();

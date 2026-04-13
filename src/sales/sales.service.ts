@@ -119,11 +119,11 @@ export class SalesService {
       .where('1=1');
 
     if (query.from) {
-      queryBuilder.andWhere('sale.occurred_at >= :from', { from: query.from });
+      queryBuilder.andWhere('sale.occurredAt >= :from', { from: query.from });
     }
 
     if (query.to) {
-      queryBuilder.andWhere('sale.occurred_at <= :to', { to: query.to });
+      queryBuilder.andWhere('sale.occurredAt <= :to', { to: query.to });
     }
 
     if (query.search) {
@@ -132,7 +132,7 @@ export class SalesService {
       });
     }
 
-    queryBuilder.orderBy('sale.occurred_at', 'DESC');
+    queryBuilder.orderBy('sale.occurredAt', 'DESC');
     queryBuilder.skip((page - 1) * limit).take(limit);
 
     const [sales, total] = await queryBuilder.getManyAndCount();

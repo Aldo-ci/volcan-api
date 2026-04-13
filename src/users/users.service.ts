@@ -46,7 +46,7 @@ export class UsersService {
     const queryBuilder = this.usersRepository
       .createQueryBuilder('user')
       .leftJoinAndSelect('user.role', 'role')
-      .where('user.deleted_at IS NULL');
+      .where('user.deletedAt IS NULL');
 
     if (query.search) {
       queryBuilder.andWhere('LOWER(user.username) LIKE LOWER(:search)', {
@@ -55,19 +55,19 @@ export class UsersService {
     }
 
     if (query.isActive !== undefined) {
-      queryBuilder.andWhere('user.is_active = :isActive', {
+      queryBuilder.andWhere('user.isActive = :isActive', {
         isActive: query.isActive,
       });
     }
 
     if (query.roleId) {
-      queryBuilder.andWhere('user.role_id = :roleId', { roleId: query.roleId });
+      queryBuilder.andWhere('user.roleId = :roleId', { roleId: query.roleId });
     }
 
-    queryBuilder.orderBy('user.created_at', 'DESC');
+    queryBuilder.orderBy('user.createdAt', 'DESC');
     queryBuilder.skip((page - 1) * limit).take(limit);
-
     const [users, total] = await queryBuilder.getManyAndCount();
+
     return buildPaginatedResponse(
       users.map((user) => this.toResponseDto(user)),
       total,

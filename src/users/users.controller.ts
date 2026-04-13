@@ -38,7 +38,7 @@ export class UsersController {
 
   @Get()
   @ApiOkResponse({ type: UserResponseDto, isArray: true })
-  findAll(@Query() query: QueryUsersDto) {
+  findAll(@Query() query: QueryUsersDto) {    
     return this.usersService.findAll(query);
   }
 
