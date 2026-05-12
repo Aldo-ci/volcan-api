@@ -25,12 +25,11 @@ export class ProductCategoriesService {
   async create(
     dto: CreateProductCategoryDto,
   ): Promise<ProductCategoryResponseDto> {
-    await this.ensureUnique(dto.name, dto.legacyProductTypeId);
+    await this.ensureUnique(dto.name);
     const category = this.categoriesRepository.create({
       id: randomUUID(),
       name: dto.name,
       description: dto.description,
-      legacyProductTypeId: dto.legacyProductTypeId,
       isActive: dto.isActive ?? true,
     });
 
@@ -79,14 +78,7 @@ export class ProductCategoriesService {
     const category = await this.getById(id);
 
     if (dto.name && dto.name !== category.name) {
-      await this.ensureUnique(dto.name, undefined, id);
-    }
-
-    if (
-      dto.legacyProductTypeId &&
-      dto.legacyProductTypeId !== category.legacyProductTypeId
-    ) {
-      await this.ensureUnique(undefined, dto.legacyProductTypeId, id);
+      await this.ensureUnique(dto.name, id);
     }
 
     Object.assign(category, dto);
@@ -104,7 +96,6 @@ export class ProductCategoriesService {
   toResponseDto(category: ProductCategory): ProductCategoryResponseDto {
     return {
       id: category.id,
-      legacyProductTypeId: category.legacyProductTypeId,
       name: category.name,
       description: category.description,
       isActive: category.isActive,
@@ -125,7 +116,6 @@ export class ProductCategoriesService {
 
   private async ensureUnique(
     name?: string,
-    legacyProductTypeId?: string,
     ignoreId?: string,
   ): Promise<void> {
     if (name) {
@@ -134,15 +124,6 @@ export class ProductCategoriesService {
       });
       if (existing && existing.id !== ignoreId) {
         throw new ConflictException('Category name already exists');
-      }
-    }
-
-    if (legacyProductTypeId) {
-      const existing = await this.categoriesRepository.findOne({
-        where: { legacyProductTypeId },
-      });
-      if (existing && existing.id !== ignoreId) {
-        throw new ConflictException('Legacy product type id already exists');
       }
     }
   }

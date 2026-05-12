@@ -6,7 +6,7 @@ import {
 } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { randomUUID } from 'crypto';
-import { Repository } from 'typeorm';
+import { Brackets, Repository } from 'typeorm';
 import { buildPaginatedResponse } from '../common/dto/paginated-response.dto';
 import { ProductCategoriesService } from '../product-categories/product-categories.service';
 import { CreateProductDto, ProductResponseDto } from './dto/create-product.dto';
@@ -56,9 +56,15 @@ export class ProductsService {
       .where('product.deletedAt IS NULL');
 
     if (query.search) {
-      queryBuilder.andWhere('LOWER(product.name) LIKE LOWER(:search)', {
-        search: `%${query.search}%`,
-      });
+      queryBuilder.andWhere(
+        new Brackets((qb) => {
+          qb.where('LOWER(product.name) LIKE LOWER(:search)', {
+            search: `%${query.search}%`,
+          }).orWhere('product.barcode LIKE :search', {
+            search: `%${query.search}%`,
+          });
+        }),
+      );
     }
 
     if (query.categoryId) {

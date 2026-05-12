@@ -118,11 +118,11 @@ export class SalesService {
       .leftJoinAndSelect('sale.items', 'items')
       .where('1=1');
 
-    if (query.from) {
+    if (query.from && query.from !== undefined) {
       queryBuilder.andWhere('sale.occurredAt >= :from', { from: query.from });
     }
 
-    if (query.to) {
+    if (query.to && query.from !== undefined) {
       queryBuilder.andWhere('sale.occurredAt <= :to', { to: query.to });
     }
 

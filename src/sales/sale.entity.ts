@@ -22,25 +22,8 @@ export class Sale {
   @PrimaryColumn({ type: uuidColumnType, length: 36 })
   id!: string;
 
-  @Column({
-    name: 'legacy_sale_id',
-    type: 'varchar',
-    length: 191,
-    nullable: true,
-    unique: true,
-  })
-  legacySaleId?: string | null;
-
   @Column({ name: 'occurred_at', type: 'datetime' })
   occurredAt!: Date;
-
-  @Column({
-    name: 'legacy_fecha_string',
-    type: 'varchar',
-    length: 100,
-    nullable: true,
-  })
-  legacyFechaString?: string | null;
 
   @Column({
     name: 'created_by_user_id',

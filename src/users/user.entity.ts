@@ -19,15 +19,6 @@ export class User {
   @PrimaryColumn({ type: uuidColumnType, length: 36 })
   id!: string;
 
-  @Column({
-    name: 'legacy_user_id',
-    type: 'varchar',
-    length: 191,
-    nullable: true,
-    unique: true,
-  })
-  legacyUserId?: string | null;
-
   @Column({ type: 'varchar', length: 100, unique: true })
   username!: string;
 
@@ -37,14 +28,6 @@ export class User {
 
   @Column({ name: 'role_id', type: uuidColumnType, length: 36, nullable: true })
   roleId?: string | null;
-
-  @Column({
-    name: 'legacy_role_name',
-    type: 'varchar',
-    length: 100,
-    nullable: true,
-  })
-  legacyRoleName?: string | null;
 
   @Column({ name: 'is_active', type: 'tinyint', width: 1, default: () => '1' })
   isActive!: boolean;

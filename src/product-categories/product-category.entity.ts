@@ -14,15 +14,6 @@ export class ProductCategory {
   @PrimaryColumn({ type: uuidColumnType, length: 36 })
   id!: string;
 
-  @Column({
-    name: 'legacy_product_type_id',
-    type: 'varchar',
-    length: 191,
-    nullable: true,
-    unique: true,
-  })
-  legacyProductTypeId?: string | null;
-
   @Column({ type: 'varchar', length: 120, unique: true })
   name!: string;
 

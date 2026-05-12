@@ -58,7 +58,6 @@ Response `201`:
   "accessToken": "jwt-token",
   "user": {
     "id": "uuid",
-    "legacyUserId": null,
     "username": "admin",
     "roleId": "uuid",
     "role": {
@@ -68,7 +67,6 @@ Response `201`:
       "createdAt": "2026-04-12T12:00:00.000Z",
       "updatedAt": "2026-04-12T12:00:00.000Z"
     },
-    "legacyRoleName": null,
     "isActive": true,
     "createdAt": "2026-04-12T12:00:00.000Z",
     "updatedAt": "2026-04-12T12:00:00.000Z",
@@ -138,11 +136,9 @@ Body:
 
 ```json
 {
-  "legacyUserId": "legacy-123",
   "username": "cashier",
   "password": "secret123",
   "roleId": "uuid",
-  "legacyRoleName": "Cashier",
   "isActive": true
 }
 ```
@@ -152,7 +148,6 @@ Response `201`:
 ```json
 {
   "id": "uuid",
-  "legacyUserId": "legacy-123",
   "username": "cashier",
   "roleId": "uuid",
   "role": {
@@ -162,7 +157,6 @@ Response `201`:
     "createdAt": "2026-04-12T12:00:00.000Z",
     "updatedAt": "2026-04-12T12:00:00.000Z"
   },
-  "legacyRoleName": "Cashier",
   "isActive": true,
   "createdAt": "2026-04-12T12:00:00.000Z",
   "updatedAt": "2026-04-12T12:00:00.000Z",
@@ -192,7 +186,6 @@ Response `200`:
   "data": [
     {
       "id": "uuid",
-      "legacyUserId": null,
       "username": "cashier",
       "roleId": "uuid",
       "role": {
@@ -202,7 +195,6 @@ Response `200`:
         "createdAt": "2026-04-12T12:00:00.000Z",
         "updatedAt": "2026-04-12T12:00:00.000Z"
       },
-      "legacyRoleName": null,
       "isActive": true,
       "createdAt": "2026-04-12T12:00:00.000Z",
       "updatedAt": "2026-04-12T12:00:00.000Z",
@@ -273,7 +265,6 @@ Body:
 
 ```json
 {
-  "legacyProductTypeId": "legacy-10",
   "name": "Shirts",
   "description": "Top wear",
   "isActive": true
@@ -285,7 +276,6 @@ Response `201`:
 ```json
 {
   "id": "uuid",
-  "legacyProductTypeId": "legacy-10",
   "name": "Shirts",
   "description": "Top wear",
   "isActive": true,
@@ -364,7 +354,6 @@ Response `201`:
   "categoryId": "uuid",
   "category": {
     "id": "uuid",
-    "legacyProductTypeId": null,
     "name": "Shirts",
     "description": null,
     "isActive": true,
@@ -423,7 +412,6 @@ Response `200`:
     "categoryId": "uuid",
     "category": {
       "id": "uuid",
-      "legacyProductTypeId": null,
       "name": "Shirts",
       "description": null,
       "isActive": true,

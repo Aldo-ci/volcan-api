@@ -16,15 +16,6 @@ export class SaleItem {
   @PrimaryColumn({ type: uuidColumnType, length: 36 })
   id!: string;
 
-  @Column({
-    name: 'legacy_cash_sale_id',
-    type: 'varchar',
-    length: 191,
-    nullable: true,
-    unique: true,
-  })
-  legacyCashSaleId?: string | null;
-
   @Column({ name: 'sale_id', type: uuidColumnType, length: 36 })
   saleId!: string;
 

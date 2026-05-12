@@ -28,11 +28,9 @@ export class UsersService {
 
     const user = this.usersRepository.create({
       id: randomUUID(),
-      legacyUserId: createUserDto.legacyUserId,
       username: createUserDto.username,
       passwordHash: await bcrypt.hash(createUserDto.password, 10),
       roleId: createUserDto.roleId,
-      legacyRoleName: createUserDto.legacyRoleName,
       isActive: createUserDto.isActive ?? true,
     });
 
@@ -100,8 +98,6 @@ export class UsersService {
     }
 
     user.username = updateUserDto.username ?? user.username;
-    user.legacyUserId = updateUserDto.legacyUserId ?? user.legacyUserId;
-    user.legacyRoleName = updateUserDto.legacyRoleName ?? user.legacyRoleName;
     user.isActive = updateUserDto.isActive ?? user.isActive;
 
     return this.toResponseDto(await this.usersRepository.save(user));
@@ -139,11 +135,9 @@ export class UsersService {
   toResponseDto(user: User): UserResponseDto {
     return {
       id: user.id,
-      legacyUserId: user.legacyUserId,
       username: user.username,
       roleId: user.roleId,
       role: user.role ? this.rolesService.toResponseDto(user.role) : null,
-      legacyRoleName: user.legacyRoleName,
       isActive: user.isActive,
       createdAt: user.createdAt,
       updatedAt: user.updatedAt,
