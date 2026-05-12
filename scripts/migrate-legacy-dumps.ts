@@ -77,6 +77,7 @@ function parseInsertRows(sql: string, tableName: string): InsertValue[][] {
     let index = insertIndex + marker.length;
     let currentRow: InsertValue[] = [];
     let currentValue = '';
+    let currentValueWasString = false;
     let inString = false;
     let rowStarted = false;
 
@@ -110,6 +111,7 @@ function parseInsertRows(sql: string, tableName: string): InsertValue[][] {
 
       if (char === "'") {
         inString = true;
+        currentValueWasString = true;
         index += 1;
         continue;
       }
@@ -118,22 +120,25 @@ function parseInsertRows(sql: string, tableName: string): InsertValue[][] {
         rowStarted = true;
         currentRow = [];
         currentValue = '';
+        currentValueWasString = false;
         index += 1;
         continue;
       }
 
       if (rowStarted && char === ',') {
-        currentRow.push(parseSqlValue(currentValue));
+        currentRow.push(parseSqlValue(currentValue, currentValueWasString));
         currentValue = '';
+        currentValueWasString = false;
         index += 1;
         continue;
       }
 
       if (rowStarted && char === ')') {
-        currentRow.push(parseSqlValue(currentValue));
+        currentRow.push(parseSqlValue(currentValue, currentValueWasString));
         rows.push(currentRow);
         rowStarted = false;
         currentValue = '';
+        currentValueWasString = false;
         index += 1;
         continue;
       }
@@ -154,8 +159,12 @@ function parseInsertRows(sql: string, tableName: string): InsertValue[][] {
   return rows;
 }
 
-function parseSqlValue(value: string): InsertValue {
+function parseSqlValue(value: string, wasString: boolean): InsertValue {
   const trimmed = value.trim();
+
+  if (wasString) {
+    return value;
+  }
 
   if (trimmed.toUpperCase() === 'NULL') {
     return null;
