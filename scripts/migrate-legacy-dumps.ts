@@ -330,9 +330,25 @@ async function ensureDestinationIsEmpty(): Promise<void> {
     ['sale_items', SaleItem],
   ] as const;
 
+  const missingTables: string[] = [];
   const nonEmptyTables: string[] = [];
 
   for (const [tableName, entity] of checks) {
+    const hasTable = await dataSource.query(
+      `
+        SELECT COUNT(*) AS table_count
+        FROM information_schema.tables
+        WHERE table_schema = DATABASE()
+          AND table_name = ?
+      `,
+      [tableName],
+    );
+
+    if (Number(hasTable[0]?.table_count ?? 0) === 0) {
+      missingTables.push(tableName);
+      continue;
+    }
+
     const count = await dataSource.getRepository(entity).count({
       withDeleted: true,
     });
@@ -340,6 +356,14 @@ async function ensureDestinationIsEmpty(): Promise<void> {
     if (count > 0) {
       nonEmptyTables.push(`${tableName} (${count})`);
     }
+  }
+
+  if (missingTables.length > 0) {
+    throw new Error(
+      `Destination schema is missing tables: ${missingTables.join(
+        ', ',
+      )}. Run "npm run migration:run" before "npm run migrate:legacy".`,
+    );
   }
 
   if (nonEmptyTables.length > 0) {
